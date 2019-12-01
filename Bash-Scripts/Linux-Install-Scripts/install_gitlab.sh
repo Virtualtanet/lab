@@ -1,52 +1,30 @@
 #!/bin/bash
-# Create New Bash Scrip for UFW
-# Remove OpenSSH add only HTTP & HTTPS
 
-TEXT_RESET='\e[0m'
-TEXT_YELLOW='\e[0;33m'
-TEXT_RED_B='\e[1;31m'
-
-# refresh your system's package index
+# Installing the Dependencies
 sudo apt update
-aecho -e $TEXT_YELLOW
-echo 'refesh apt completed...'
-echo -e $TEXT_RESET
-
-# install the depcendencies
 sudo apt install ca-certificates curl openssh-server postfix
-echo -e $TEXT_YELLOW
-echo 'installation ca-certificates completed...'
-echo -e $TEXT_RESET
 
-# Download the installation script: https://packages.gitlab.com/gitlab/gitlab-ce/install
-curl -o /tmp/script.deb.sh https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh
-sudo chmod +x /tmp/script.deb.sh
-echo -e $TEXT_YELLOW
-echo 'folder created and installation script downloaded...'
-echo -e $TEXT_RESET
-
-# run downloaded scrip
-sudo /tmp/script.deb.sh
-echo -e $TEXT_YELLOW
-echo 'Running installation scrip for GitLab repositories completed...'
-echo -e $TEXT_RESET
-
-# install GitLab
+# Installing GitLab
+cd /tmp
+curl -LO https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh
+sudo bash /tmp/script.deb.sh
 sudo apt install gitlab-ce
-echo -e $TEXT_YELLOW
-echo 'Installation GitLab completed...'
-echo -e $TEXT_RESET
 
-# Adjust Firewall
+# Configure UFW
+sudo ufw app list
+sudo ufw allow OpenSSH
 sudo ufw allow http
 sudo ufw allow https
-ufw allow OpenSSH
-echo -e $TEXT_YELLOW
-echo 'Firewall added; SSSH, HTTP & HTTPS...'
-echo -e $TEXT_RESET
-
-# Start Firewall
 sudo ufw enable
-echo -e $TEXT_YELLOW
-echo 'Start Firewall completed...'
-echo -e $TEXT_RESET
+sudo ufw status
+
+# Editing the GitLab Configuration File
+sudo nano /etc/gitlab/gitlab.rb 
+
+#! edit line: external_url http to https and fill your domain https://gitlab.virtualtanet.com
+#! Uncomment letsencrypt['contact_emails'] = ['sammy@example.com']
+
+# Reconfigure gitlab
+sudo gitlab-ctl reconfigure
+
+# Log to gitlab
