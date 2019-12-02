@@ -11,7 +11,7 @@ sudo wget https://releases.hashicorp.com/terraform/0.12.16/terraform_0.12.16_lin
 # Wnzip terraform_${VER}_linux_amd64.zip
 sudo unzip terraform_0.12.16_linux_amd64.zip
 
-# Move terraform
+# Move terraform to systempath to call terraform from any directory
 sudo mv terraform /usr/local/bin/
 
 # Clean zip file

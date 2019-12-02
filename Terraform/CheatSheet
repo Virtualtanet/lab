@@ -1,0 +1,10 @@
+# Run the config and deploy
+terraform apply
+
+
+# Show the output
+terraform show
+
+
+# Destroy deployed machines
+terraform destroy

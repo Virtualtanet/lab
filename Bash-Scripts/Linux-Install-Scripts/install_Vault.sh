@@ -3,7 +3,7 @@
 # Requirements:
 # Go Language 1.12.7
 # GIT
-# amek
+# make
 
 # Upgrade and apply latest patches
 sudo apt-get update
